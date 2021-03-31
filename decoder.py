@@ -65,7 +65,7 @@ def findSSID(pkt):
             # start at 6 because frame first 5 bytes are OUI+VSTYPE, frame.info containt the OUI but not the last part of the payload...
             count = 0
             payload = frame.original[6:]
-            while count < len(payload):
+            while count < len(payload): # https://docs.python.org/3/library/struct.html
                 V = ''
                 T, L = struct.unpack_from('>bb', payload, count)
                 count += 2
