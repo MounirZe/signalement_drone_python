@@ -37,7 +37,7 @@ FRAME_DISTANCE_LIMIT = 30       # In m
 # |    11    |    Heading              |    2    |
 
 #CUSTOM : 
-# |    12    |    Voltage              |    4    |
+# |    12    |   Tension   |    4    |
 FRAME_PROTOCOL_VERSION_TYPE = 1
 FRAME_ID_FR_TYPE = 2
 FRAME_LATITUDE_TYPE = 4        # In WS84 in degree * 1e5
@@ -48,6 +48,8 @@ FRAME_HOME_LATITUDE_TYPE = 8   # In WS84 in degree * 1e5
 FRAME_HOME_LONGITUDE_TYPE = 9  # In WS84 in degree * 1e5
 FRAME_GROUND_SPEED_TYPE = 10   # In m/s
 FRAME_HEADING_TYPE = 11        # Heading in degree from north 0 to 359.
+
+FRAME_TENSION_TYPE = 12       # Tension in V
 
 FRAME_TLV_LENGTH = [0, 1, 30, 0, 4, 4, 2, 2, 4, 4, 1, 2 , 4]
 FRAME_TLV_LENGTH_TYPE = ['b', 'b', 's', 'b', 'i', 'i', 'h', 'h', 'i', 'i', 'b', 'h'  , 'f']
