@@ -217,6 +217,13 @@ public:
         memcpy(_droneID, id_value, TLV_LENGTH[ID_FR]);
     }
 	
+     /**
+     * Setter pour la tension de la batterie en V
+     * @param tension
+     */
+    void set_tension(float tension) {
+        _tension = tension;
+    }
 	/**
      * Renvoie la distance (3D) par rapport Ã  la derniÃ¨re position envoyÃ©e.
      * 
@@ -351,6 +358,20 @@ public:
             full_frame[start_from + count] = (get_2_complement(_heading) >> (8 * i)) & 0xFF;
             count++;
         }
+        // TENSION
+        full_frame[start_from + count] = TENSION;
+        count++;
+        full_frame[start_from + count] = TLV_LENGTH[TENSION];
+        count++;
+        uint8_t tension_uint8[sizeof(float)];
+
+        memcpy(tension_uint8, &_tension, sizeof(_tension));   // Recopie du float sous la forme d'un tableau de byte
+        for (auto i = TLV_LENGTH[TENSION] - 1; i >= 0; i--) {
+            full_frame[start_from + count] = tension_uint8[i];
+            count++;
+        }
+
+
         return count;
         // TODO: check lenght
     }
@@ -439,7 +460,8 @@ private:
       HOME_LONGITUDE = 9,  // In WS84 in degree * 1e5
       GROUND_SPEED = 10,   // In m/s
       HEADING = 11,        // Heading in degree from north 0 to 359.
-      NOT_DEFINED_END = 12,
+      TENSION = 12,
+      NOT_DEFINED_END = 13,
     };
 
     /**
@@ -486,6 +508,7 @@ private:
     int16_t _home_altitude;
     uint8_t _ground_speed;
     uint16_t _heading;
+    float _tension = 0;
     uint8_t _droneID[TLV_LENGTH[ID_FR]+1]; // +1 for null termination
     std::chrono::system_clock::time_point _last_send = std::chrono::system_clock::now();
     std::chrono::system_clock::time_point _last_data_rcv = std::chrono::system_clock::now();
