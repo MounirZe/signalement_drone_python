@@ -37,7 +37,8 @@ enum DATA_TYPE: uint8_t {
   HOME_LONGITUDE = 9,  // In WS84 in degree * 1e5
   GROUND_SPEED = 10,   // In m/s
   HEADING = 11,        // Heading in degree from north 0 to 359.
-  NOT_DEFINED_END = 12,
+  TENSION = 12,
+  NOT_DEFINED_END = 13,
 };
 
 /**
@@ -56,6 +57,7 @@ static constexpr uint8_t TLV_LENGTH[] {
   4,  // [DATA_TYPE::HOME_LONGITUDE]
   1,  // [DATA_TYPE::GROUND_SPEED]
   2,  // [DATA_TYPE::HEADING]
+  4   // [DATA_TYPE::TENSION]
 };
 
 
@@ -171,6 +173,21 @@ static void printAltitude(uint16_t start, int len, uint16_t size, uint8_t* data)
   trame = trame + String(data_value);
 }
 
+static void printTension(uint16_t start, int len, uint16_t size, uint8_t* data) {
+  uint8_t count = size-1;
+  int data_value = 0;
+
+  for(uint16_t i = start; i < len && i < start+size; i++) {
+    //Serial.print(count); Serial.print("-");  
+    data_value +=  (data[i]) << (8 * count); 
+    count--;
+  }
+  
+  Serial.print(data_value);
+  trame = trame + String(data_value);
+}
+
+
 void beaconCallback(void* buf, wifi_promiscuous_pkt_type_t type)
 {
   wifi_promiscuous_pkt_t *snifferPacket = (wifi_promiscuous_pkt_t*)buf;
@@ -230,6 +247,14 @@ void beaconCallback(void* buf, wifi_promiscuous_pkt_type_t type)
     //heading
     trame += " Dir=";
     Serial.print(" DIR: "); printAltitude(offset, len, TLV_LENGTH[HEADING] , snifferPacket->payload); 
+    offset += TLV_LENGTH[HEADING]+2;
+    //Tension
+    trame += " Tension=";
+    Serial.print(" TENSION: "); 
+    printAltitude(offset, len, TLV_LENGTH[TENSION] , snifferPacket->payload); 
+    
+
+    
     Serial.println();
     Serial.println(trame);
     pCharacteristic->setValue(trame.c_str());
