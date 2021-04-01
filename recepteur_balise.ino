@@ -251,7 +251,7 @@ void beaconCallback(void* buf, wifi_promiscuous_pkt_type_t type)
     //Tension
     trame += " Tension=";
     Serial.print(" TENSION: "); 
-    printAltitude(offset, len, TLV_LENGTH[TENSION] , snifferPacket->payload); 
+    printTension(offset, len, TLV_LENGTH[TENSION] , snifferPacket->payload); 
     
 
     
