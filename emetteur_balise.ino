@@ -230,6 +230,15 @@ void loop()
         break;
 
     }
+    /*
+    Remplacement de la valeur de tension du drone à faire ici
+
+    TODO : Lecture de la tension sur un pin- Conversion de cette valeur en volt
+    */
+
+    drone_idfr.set_tension(1);
+
+
     /**
      * On regarde s'il temps d'envoyer la trame d'identification drone: soit toutes les 3s soit si le drones s'est dÃ©placÃ© de 30m en moins de 3s.
      *  - soit toutes les 3s,
